@@ -1,12 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-
+import { StyleSheet, Text, View, TextInput} from 'react-native';
+import Todo from "./component/Todo";
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>hack check work flow</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Todo></Todo>
   );
 }
 
