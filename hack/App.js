@@ -1,20 +1,12 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import Login from "./pages/login"; 
+import Signup from "./pages/signup";
 
-export default function App() {
+function App() {
   return (
-    <View style={styles.container}>
-      <Text>hack</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Login/>
+    // <Signup/>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
