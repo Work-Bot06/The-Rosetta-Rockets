@@ -29,10 +29,10 @@ jobs:
           cd hack
           npm install
 
-      - name: Build app
+      - name: Build app for web
         run: |
           cd hack
-          npm start
+          npm run build
 
       - name: Upload to S3
         uses: jakejarvis/s3-sync-action@master
