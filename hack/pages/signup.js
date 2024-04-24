@@ -1,59 +1,107 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TextInput,
-  Button,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, Text, View, TextInput, TouchableOpacity } from "react-native";
+
 export default function Signup() {
+  const [firstname, setFirstname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [firstnameError, setFirstnameError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+
+  const validateFirstname = () => {
+    if (!firstname) {
+      setFirstnameError("First name is required");
+      return false;
+    }
+    setFirstnameError("");
+    return true;
+  };
+
+  const validateEmail = () => {
+    if (!email) {
+      setEmailError("Email is required");
+      return false;
+    } else if (!isValidEmail(email)) {
+      setEmailError("Invalid email format");
+      return false;
+    }
+    setEmailError("");
+    return true;
+  };
+
+  const validatePassword = () => {
+    if (!password) {
+      setPasswordError("Password is required");
+      return false;
+    }
+    setPasswordError("");
+    return true;
+  };
+
+  const isValidEmail = (value) => {
+    // Basic email validation regex
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(value);
+  };
+
+  const handleSignup = () => {
+    const isFirstnameValid = validateFirstname();
+    const isEmailValid = validateEmail();
+    const isPasswordValid = validatePassword();
+
+    if (isFirstnameValid && isEmailValid && isPasswordValid) {
+      // Perform signup logic here
+      console.log("Signup successful!");
+    }
+  };
+
   return (
     <View style={styles.container}>
+        <Text style={styles.title}>Signup Form</Text>
       <StatusBar style="auto" />
-      <View style={styles.inputView}>
-        <TextInput
-          style={styles.TextInput}
-          placeholder="First Name"
-          placeholderTextColor="#003f5c"
-          onChangeText={(firstname) => setFirstname(firstname)}
-        />
-      </View>
-      <View style={styles.inputView}>
-        <TextInput
-          style={styles.TextInput}
-          placeholder="Last Name"
-          placeholderTextColor="#003f5c"
-          secureTextEntry={true}
-          onChangeText={(lastname) => setLastname(lastname)}
-        />
-      </View>
-      <View style={styles.inputView}>
-        <TextInput
-          style={styles.TextInput}
-          placeholder="Email Address"
-          placeholderTextColor="#003f5c"
-          onChangeText={(email) => setEmail(email)}
-        />
-      </View>
-      <View style={styles.inputView}>
-        <TextInput
-          style={styles.TextInput}
-          placeholder="Password"
-          placeholderTextColor="#003f5c"
-          onChangeText={(password) => setPassword(password)}
-        />
-      </View>
-      <TouchableOpacity style={styles.loginBtn}>
-        <Text style={styles.loginText}>SIGNUP</Text>
+      <TextInput
+        style={[styles.input, firstnameError && styles.inputError]}
+        placeholder="First Name"
+        value={firstname}
+        onChangeText={(text) => setFirstname(text)}
+        onBlur={validateFirstname}
+      />
+      {firstnameError ? <Text style={styles.error}>{firstnameError}</Text> : null}
+      <TextInput
+        style={[styles.input]}
+        placeholder="Last Name"
+        value={firstname}
+        onChangeText={(text) => setLastname(text)}
+        // onBlur={validateFirstname}
+      />
+      <TextInput
+        style={[styles.input, emailError && styles.inputError]}
+        placeholder="Email Address"
+        value={email}
+        onChangeText={(text) => setEmail(text)}
+        onBlur={validateEmail}
+      />
+      {emailError ? <Text style={styles.error}>{emailError}</Text> : null}
+
+      <TextInput
+        style={[styles.input, passwordError && styles.inputError]}
+        placeholder="Password"
+        value={password}
+        onChangeText={(text) => setPassword(text)}
+        onBlur={validatePassword}
+        secureTextEntry
+      />
+      {passwordError ? <Text style={styles.error}>{passwordError}</Text> : null}
+
+      <TouchableOpacity style={styles.button} onPress={handleSignup}>
+        <Text style={styles.buttonText}>SIGNUP</Text>
       </TouchableOpacity>
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -61,32 +109,40 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  inputView: {
+  title: {
+    fontSize: 30,
+    fontWeight: "bold",
+    marginBottom: 20, 
+    color: "#9999FF",
+    height: 40,
+  },
+  input: {
     backgroundColor: "#E0E0E0",
     borderRadius: 30,
     width: "40%",
-    height: 45,
-    marginBottom: 20,
-    alignItems: "flex-start",
+    height: 40,
+    borderWidth: 1,
+    borderColor: "#ccc",
+    paddingHorizontal: 10,
+    marginBottom: 10,
   },
-  TextInput: {
-    height: 50,
-    flex: 1,
-    padding: 10,
-    marginLeft: 30,
+  inputError: {
+    borderColor: "red",
   },
-  forgot_button: {
-    height: 1,
-    marginBottom: 30,
-    alignItems: "flex-end"
+  error: {
+    color: "red",
+    marginBottom: 10,
   },
-  loginBtn: {
+  button: {
     width: "40%",
-    borderRadius: 25,
-    height: 50,
+    height: 40,
+    backgroundColor: "#9999FF",
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 40,
-    backgroundColor: "#9999FF",
+    borderRadius: 25,
+  },
+  buttonText: {
+    color: "#fff",
+    fontWeight: "bold",
   },
 });

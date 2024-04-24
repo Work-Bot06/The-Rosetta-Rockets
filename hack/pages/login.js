@@ -1,79 +1,116 @@
-import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TextInput,
-  Button,
-  TouchableOpacity,
-} from "react-native";
-export default function Login() {
+import { StyleSheet, Text, View, TextInput, TouchableOpacity } from "react-native";
+
+export default function Login({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+
+  const validateEmail = () => {
+    if (!email) {
+      setEmailError("Email is required");
+      return false;
+    }
+    setEmailError("");
+    return true;
+  };
+
+  const validatePassword = () => {
+    if (!password) {
+      setPasswordError("Password is required");
+      return false;
+    }
+    setPasswordError("");
+    return true;
+  };
+
+  const handleLogin = () => {
+    const isEmailValid = validateEmail();
+    const isPasswordValid = validatePassword();
+
+    if (isEmailValid && isPasswordValid) {
+      // Perform login logic here
+      console.log("Login successful!");
+    }
+  };
+
   return (
     <View style={styles.container}>
-      <StatusBar style="auto" />
-      <View style={styles.inputView}>
-        <TextInput
-          style={styles.TextInput}
-          placeholder="Email"
-          placeholderTextColor="#003f5c"
-          onChangeText={(email) => setEmail(email)}
-        />
-      </View>
-      <View style={styles.inputView}>
-        <TextInput
-          style={styles.TextInput}
-          placeholder="Password"
-          placeholderTextColor="#003f5c"
-          secureTextEntry={true}
-          onChangeText={(password) => setPassword(password)}
-        />
-      </View>
-      <TouchableOpacity>
-        <Text style={styles.forgot_button}>Forgot Password?</Text>
+      <Text style={styles.title}>Login Form</Text>
+      <TextInput
+        style={[styles.input, emailError && styles.inputError]}
+        placeholder="Email"
+        value={email}
+        onChangeText={(text) => setEmail(text)}
+        onBlur={validateEmail}
+      />
+      {emailError ? <Text style={styles.error}>{emailError}</Text> : null}
+
+      <TextInput
+        style={[styles.input, passwordError && styles.inputError]}
+        placeholder="Password"
+        value={password}
+        onChangeText={(text) => setPassword(text)}
+        secureTextEntry
+        onBlur={validatePassword}
+      />
+      {passwordError ? <Text style={styles.error}>{passwordError}</Text> : null}
+
+      <TouchableOpacity style={styles.button} onPress={handleLogin}>
+        <Text style={styles.buttonText}>LOGIN</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.loginBtn}>
-        <Text style={styles.loginText}>LOGIN</Text>
+
+      <View style={{ height: 20 }} />
+
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Signup")}>
+        <Text style={styles.buttonText}>SIGNUP</Text>
       </TouchableOpacity>
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+    paddingHorizontal: 20,
   },
-  inputView: {
+  title: {
+    fontSize: 30,
+    fontWeight: "bold",
+    marginBottom: 20,
+    color: "#9999FF",
+    height: 40,
+  },
+  input: {
+    width: "40%",
+    height: 40,
+    borderWidth: 1,
     backgroundColor: "#E0E0E0",
     borderRadius: 30,
+    paddingHorizontal: 10,
+    marginBottom: 10,
+  },
+  inputError: {
+    borderColor: "red",
+  },
+  error: {
+    color: "red",
+    marginBottom: 10,
+  },
+  button: {
     width: "40%",
-    height: 45,
-    marginBottom: 20,
-    alignItems: "flex-start",
-  },
-  TextInput: {
-    height: 50,
-    flex: 1,
-    padding: 10,
-    marginLeft: 30,
-  },
-  forgot_button: {
-    height: 1,
-    marginBottom: 30,
-    alignItems: "flex-end"
-  },
-  loginBtn: {
-    width: "40%",
-    borderRadius: 25,
-    height: 50,
+    height: 40,
+    backgroundColor: "#9999FF",
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 40,
-    backgroundColor: "#9999FF",
+    borderRadius: 25,
+    marginTop: 10,
+  },
+  buttonText: {
+    color: "#fff",
+    fontWeight: "bold",
   },
 });
