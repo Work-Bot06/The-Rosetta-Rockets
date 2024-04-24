@@ -18,7 +18,11 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '14'
-
+      - name: Install React Native CLI
+        run: |
+          cd hack
+          npm install -g react-native-cli
+   
       - name: Install dependencies
        
         run: |
@@ -27,8 +31,8 @@ jobs:
 
       - name: Build app
         run: |
-          npx react-native bundle --platform ios --entry-file index.js --bundle-output ios/main.jsbundle
-          npx react-native bundle --platform android --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --dev false
+          cd hack
+          npm start
 
       - name: Upload to S3
         uses: jakejarvis/s3-sync-action@master
